@@ -13,24 +13,24 @@ form {
 </style>
 
 <head>
-    <title>Прогнозирование зарплаты</title>
+    <title>Прогнозирование глубины и ширины сварного шва</title>
 </head>
 
 <form action="{{url_for('main')}}" method="POST">
+    <h3>Прогнозирование глубины и ширины сварного шва</h3>
     <fieldset>
-        <legend>Введите значение</legend>
-        Ваш опыт
-        <p><select name = "experience" size="1" required>
-            <option disabled>Выберите значение</option>
-            <option value=5>5</option>
-            <option selected value=10>10</option>
-            <option value=15>15</option>
-            <option value=20>20</option>
-           </select></p>
+        <p>Введите значения</p>
+        Величина зарядного тока IW
+        <input name = "IW" type="number" required>
         <br>
-        <legend>Введите значение</legend>
-        Ваш возраст
-        <input name = "age" type="number" required>
+        Ток фокусировки электронного пучка IF
+        <input name = "IF" type="number" required>
+        <br>
+        Скорость сварки VW
+        <input name = "VW" type="number" required>
+        <br>
+        Расстояние от поверхности образцов до электронно-оптической системы FP
+        <input name = "FP" type="number" required>
         <br>
         <input type="submit">
     </fieldset>
@@ -41,12 +41,12 @@ form {
     {% if result %}
         <br>
         <p style="font-size: 16px">
-        Ваша прогнозная зарплата
+        Прогнозируемая глубина шва (Depth)
         </p>
-        <p style="font-size: 24px"> {{result}}</p>
+        <p style="font-size: 24px"> {{depth}}</p>
         <p style="font-size: 16px">
-        Вы начали работать в
+        Прогнозируемая ширина шва (Width)
         </p>
-        <p style="font-size: 24px"> {{res}}</p>
+        <p style="font-size: 24px"> {{width}}</p>
     {% endif %}
 </div>

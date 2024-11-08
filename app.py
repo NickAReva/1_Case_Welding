@@ -35,15 +35,14 @@ def main():
         VW = float(flask.request.form['VW'])
         # FP
         FP = float(flask.request.form['FP'])
-        # Depth
-        Depth = float(flask.request.form['Depth'])
         # соберем все в строку DataFrame
-        row = [IW, IF, VW, FP, Depth]
-        cols = ['IW', 'IF', 'VW', 'FP', 'Depth']
-        entry = pd.DataFrame(row, columns = cols)
-        Width = loaded_model.predict(entry)
+        row = [IW, IF, VW, FP]
+        cols = ['IW', 'IF', 'VW', 'FP']
+        entry = pd.DataFrame([row], columns = cols)
+        Width_pd = loaded_model.predict([entry])
 
-        return render_template('main.html', result = Width)
+        # надо доделать - 
+        return render_template('main.html', depth = Width_pd[0, 0], width = Width_pd[0, 1])
     
 if __name__ == '__main__':
     app.run()
