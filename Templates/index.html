@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Прогнозирование размеров сварного шва</title>
+</head>
+<body>
+  <h1>
+    Прогнозирование размеров сварного шва
+  </h1>
+
+<form method="post">
+    <p>
+    <label>Величина сварочного тока IW</label>
+    <input type="text" name="IW">
+    </p>
+    <p>
+    <label>Ток фокусировки электронного пучка IF</label>
+    <input type="text" name="IF">
+    </p>
+    <p>
+    <label>Скорость сварки VW</label>
+    <input type="text" name="VW">
+    </p>
+    <p>
+    <label>Расстояние от поверхности FP</label>
+    <input type="text" name="FP">
+    </p>
+    <p>
+    <input type="submit">
+    </p>
+</form>
+<p>
+{% if message %}
+{{ message }}
+{% endif %}
+</p>
+
+</body>
+</html>

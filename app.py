@@ -1,48 +1,52 @@
 import flask
-from flask import render_template
-import pickle
+from flask import Flask, render_template, request
 
-import numpy as np
-import pandas as pd
+from processing import process
 
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-from keras.models import Model
-from keras.models import Sequential
-from keras.layers import Dense, Input
 
-app = flask.Flask(__name__, template_folder = 'templates')
+app = Flask(__name__)
 
-@app.route('/', methods = ['POST', 'GET'])
 
-@app.route('/index', methods = ['POST', 'GET'])
-def main():
-    if flask.request.method == 'GET':
-        return render_template('main.html')
-    
-    if flask.request.method == 'POST':
-        # загружаем модель
-        with open('Model/nl_model.pkl', 'rb') as f:
-            loaded_model = pickle.load(f)
-
+@app.route('/', methods=["get", "post"])
+def index():
+    message = ''
+    if request.method == "POST":
         # загружаем переменные
         # IW
-        IW = float(flask.request.form['IW'])
+        IW = request.form.get("IW")
+        try:
+            IW = float(IW)
+        except:
+            IW = 46
+            message += 'Некорректный ввод. Установлено значение по умолчанию. '
         # IF
-        IF = float(flask.request.form['IF'])
+        IF = request.form.get("IF")
+        try:
+            IF = float(IF)
+        except:
+            IF = 141
+            message += 'Некорректный ввод. Установлено значение по умолчанию. '
         # VW
-        VW = float(flask.request.form['VW'])
+        VW = request.form.get("VW")
+        try:
+            VW = float(VW)
+        except:
+            VW = 10
+            message += 'Некорректный ввод. Установлено значение по умолчанию. '
         # FP
-        FP = float(flask.request.form['FP'])
+        FP = request.form.get("FP")
+        try:
+            FP = float(FP)
+        except:
+            FP = 80
+            message += 'Некорректный ввод. Установлено значение по умолчанию. '
         # соберем все в строку DataFrame
-        row = [IW, IF, VW, FP]
-        cols = ['IW', 'IF', 'VW', 'FP']
-        entry = pd.DataFrame([row], columns = cols)
-        Width_pd = loaded_model.predict([entry])
+        depth, width = process(IW, IF, VW, FP)
+        depth = round(depth, 2)
+        width = round(width, 2)
+        message += f"Глубина шва {depth} мм. Ширина шва {width} мм."
+    return render_template("index.html", message=message)
 
-        # надо доделать - 
-        return render_template('main.html', depth = Width_pd[0, 0], width = Width_pd[0, 1])
-    
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run()
